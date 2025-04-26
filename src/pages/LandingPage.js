@@ -1,0 +1,275 @@
+import React from 'react';
+import { Link } from 'react-router-dom';
+import './LandingPage.css';
+
+const LandingPage = () => {
+    return (
+        <div style={styles.container}>
+            <header style={styles.header}>
+                <div style={styles.graphSection}>
+                    <div style={styles.screenshots}>
+                        <img
+                            src={require('../images/video1.webp')}
+                            alt='Video Screenshot 1'
+                            style={{ ...styles.screenshot, ...styles.leftTilt }}
+                        />
+                        <img
+                            src={require('../images/video2.webp')}
+                            alt='Video Screenshot 2'
+                            style={{ ...styles.screenshot, ...styles.centerScreenshot }}
+                        />
+                        <img
+                            src={require('../images/video3.webp')}
+                            alt='Video Screenshot 3'
+                            style={{ ...styles.screenshot, ...styles.rightTilt }}
+                        />
+                    </div>
+                    <div style={styles.arrowContainer}>
+                        <img
+                            src={require('../images/arrow4.png')}
+                            alt='Arrow'
+                            style={styles.arrow}
+                        />
+                        <p style={styles.arrowText}>Perfect Video</p>
+                    </div>
+                </div>
+                <div style={styles.heroSection}>
+                <h1 style={styles.bigTitle}>
+                    Transform{' '}
+                    <span style={styles.provenHighlight}>
+                        <span style={styles.provenHighlightBefore}></span>
+                        Proven
+                    </span>{' '}
+                    Success into Your Next Viral Video
+                </h1>
+                    <p style={styles.subtitle}>
+                        Leverage the power of <span style={styles.highlight}>AI</span> to analyze what works. Use real data from top-performing videos to craft content that captivates, engages, and drives results.
+                    </p>
+                    <div style={styles.ctaContainer}>
+                        <Link to='/account' style={styles.ctaButton}>
+                            Join Now
+                        </Link>
+                    </div>
+                </div>
+            </header>
+            <section style={styles.featuresSection}>
+                <h2 style={styles.sectionTitle}>Why Choose Us?</h2>
+                <div style={styles.featuresGrid}>
+                    <div style={styles.featureCard}>
+                        <h3 style={styles.featureTitle}>
+                            AI-Powered Insights <span style={styles.featureIcon}>🤖</span>
+                        </h3>
+                        <p style={styles.featureDescription}>
+                            Leverage cutting-edge AI to analyze YouTube trends and generate unique ideas tailored to your niche.
+                        </p>
+                    </div>
+                    <div style={styles.featureCard}>
+                        <h3 style={styles.featureTitle}>
+                            Creator Analysis <span style={styles.featureIcon}>📊</span>
+                        </h3>
+                        <p style={styles.featureDescription}>
+                            Explore top-performing YouTube channels and videos to understand what works and why.
+                        </p>
+                    </div>
+                    <div style={styles.featureCard}>
+                        <h3 style={styles.featureTitle}>
+                            Stay Ahead of Trends <span style={styles.featureIcon}>📈</span>
+                        </h3>
+                        <p style={styles.featureDescription}>
+                            Keep up with the latest trends and insights to stay ahead in the competitive YouTube space.
+                        </p>
+                    </div>
+                    <div style={styles.featureCard}>
+                        <h3 style={styles.featureTitle}>
+                            Generate Thumbnails <span style={styles.featureIcon}>🖼️</span>
+                        </h3>
+                        <p style={styles.featureDescription}>
+                            Create eye-catching thumbnails for your video ideas with our AI-powered thumbnail generator.
+                        </p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    );
+};
+
+const styles = {
+    container: {
+        color: '#1e293b',
+        background: ' #0f172a',
+        minHeight: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        animation: 'fadeIn 1.5s ease-in-out', // Fade-in animation for the entire page
+    },
+    header: {
+        textAlign: 'center',
+        marginBottom: '60px',
+    },
+    graphSection: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginBlock: '6%',
+    },
+    screenshots: {
+        position: 'relative',
+        width: '250px',
+        height: '150px',
+    },
+    screenshot: {
+        position: 'absolute',
+        width: '100%',
+        height: '100%',
+        borderRadius: '10px',
+        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.2)',
+        animation: 'scaleUpDown 3s infinite ease-in-out',
+    },
+    leftTilt: {
+        transform: 'rotate(-15deg)',
+        top: '15%',
+        left: '0',
+        zIndex: 1,
+        opacity: 0.8,
+    },
+    centerScreenshot: {
+        transform: 'rotate(0deg)',
+        bottom: '20%',
+        left: '20%',
+        zIndex: 2,
+        opacity: 0.8,
+    },
+    rightTilt: {
+        transform: 'rotate(5deg)',
+        top: '40%',
+        left: '50%',
+        zIndex: 0,
+        opacity: 0.8,
+    },
+    arrowContainer: {
+        display: 'flex',
+        alignItems: 'center',
+        marginLeft: '20%',
+        gap: '5%',
+    },
+    arrow: {
+        width: '150px',
+        height: 'auto',
+        transform: 'rotate(-180deg)',
+    },
+    arrowText: {
+        marginLeft: '10px',
+        fontSize: '2.8rem',
+        color: '#FFD60A',
+        fontWeight: 'bold',
+        padding: '10px',
+        textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)', // Added shadow for better readability
+        animation: 'fadeIn 2s ease-in-out', // Fade-in animation for the text
+    },
+    heroSection: {
+        textAlign: 'center',
+        marginBottom: '40px',
+    },
+    bigTitle: {
+        fontSize: '3.5rem',
+        color: '#FFD60A',
+        marginBottom: '30px',
+        fontWeight: 'bold',
+        textShadow: '3px 3px 6px rgba(0, 0, 0, 0.6)', // Added shadow for the title
+        animation: 'zoomIn 1s ease-in-out', // Zoom-in animation for the title
+    },
+    provenHighlight: {
+        position: 'relative', // Required for the pseudo-element
+        display: 'inline-block', // Ensures the pseudo-element wraps the text
+        fontWeight: 'bold',
+        color: '#FFFFFF', // White text for better contrast
+        textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)', // Subtle shadow for emphasis
+    },
+    provenHighlightBefore: {
+        content: "''", // Empty content for the pseudo-element
+        position: 'absolute',
+        bottom: '-5px', // Position the underline slightly below the text
+        left: 0,
+        right: 0,
+        height: '10px', // Height of the underline
+        background: 'linear-gradient(to right, #0f172a, rgba(0, 191, 255, 0.5))', // Gradient underline
+        borderRadius: '4px', // Optional: Adds rounded corners to the underline
+    },
+    subtitle: {
+        fontSize: '1.3rem',
+        color: '#fff',
+        marginBottom: '40px',
+        lineHeight: '1.8',
+        textShadow: '1px 1px 3px rgba(0, 0, 0, 0.5)', // Subtle shadow for the subtitle
+    },
+    ctaContainer: {
+        display: 'flex',
+        justifyContent: 'center',
+        marginTop: '20px',
+    },
+    ctaButton: {
+        backgroundColor: '#FFD60A',
+        color: '#1c1c1c',
+        textDecoration: 'none',
+        padding: '20px 50px',
+        borderRadius: '5px',
+        fontSize: '1.5rem',
+        fontWeight: 'bold',
+        transition: 'transform 0.3s ease, background-color 0.3s ease',
+        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.2)',
+        cursor: 'pointer',
+        animation: 'bounce 2s infinite', // Bounce animation for the button
+    },
+    ctaButtonHover: {
+        backgroundColor: '#FFC107', // Change color on hover
+    },
+    featuresSection: {
+        textAlign: 'center',
+        padding: '40px 20px', // Add padding for breathing room
+        backgroundColor: '#0f172a', // Retain the original background color for contrast
+        borderRadius: '10px', // Rounded corners for a modern look
+    },
+    sectionTitle: {
+        fontSize: '2.5rem',
+        color: '#fff',
+        marginBottom: '30px',
+        fontWeight: 'bold',
+        textShadow: '1px 1px 3px rgba(0, 0, 0, 0.2)',
+    },
+    featuresGrid: {
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', // Responsive grid layout
+        gap: '20px', // Space between feature cards
+    },
+    featureCard: {
+        backgroundColor: '#0f172a', // Dark background for the cards
+        padding: '20px',
+        borderRadius: '10px', // Rounded corners for a modern look
+        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', 
+        transition: 'transform 0.3s ease, box-shadow 0.3s ease', // Smooth hover effect
+    },
+    featureCardHover: {
+        transform: 'scale(1.05)', // Slightly enlarge on hover
+        boxShadow: '0 8px 15px rgba(0, 0, 0, 0.2)', // More prominent shadow on hover
+    },
+    featureTitle: {
+        fontSize: '1.5rem',
+        color: '#FFFFFF', // White text for contrast
+        marginBottom: '10px',
+        fontWeight: 'bold',
+        textShadow: '1px 1px 2px rgba(0, 0, 0, 0.1)', // Subtle shadow for feature titles
+    },
+    featureDescription: {
+        fontSize: '1rem',
+        color: '#cbd5e1', // Light gray text for readability
+        lineHeight: '1.6',
+    },
+    featureIcon: {
+        marginLeft: '8px', // Space between the title and the emoji
+        fontSize: '1.2rem', // Slightly smaller than the title
+    },
+};
+
+
+export default LandingPage;
