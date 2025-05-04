@@ -200,18 +200,14 @@ app.post('/generate-thumbnail', async (req, res) => {
 app.post('/check-customer-plan', async (req, res) => {
     const { email } = req.body;
 
-    // Validate that email is a string
     if (!email || typeof email !== 'string' || !email.includes('@')) {
         return res.status(400).json({ error: 'Invalid email format' });
     }
     try {
-        // Search for the customer by email
-        console.log('Searching for customer with email:', email);
         const normalizedEmail = email.toLowerCase();
 
         // Capitalize the first letter of the email
-        const capitalizedEmail =
-            normalizedEmail.charAt(0).toUpperCase() + normalizedEmail.slice(1);
+        const capitalizedEmail = normalizedEmail.charAt(0).toUpperCase() + normalizedEmail.slice(1);
 
         // Try searching with the normalized email
         let customers = await stripe.customers.list({
@@ -219,15 +215,12 @@ app.post('/check-customer-plan', async (req, res) => {
             limit: 1,
         });
 
-        // If no customers are found, try searching with the capitalized email
         if (customers.data.length === 0) {
-            console.log('No customers found with normalized email. Trying capitalized email...');
             customers = await stripe.customers.list({
                 email: capitalizedEmail,
                 limit: 1,
             });
         }
-        console.log('Customers found:', customers.data);
 
         if (customers.data.length === 0) {
             return res.status(404).json({ error: 'Customer not found' });
@@ -235,7 +228,6 @@ app.post('/check-customer-plan', async (req, res) => {
 
         // Customer exists
         const customer = customers.data[0];
-        console.log('Customer found:', customers);
 
         // Fetch subscriptions for the customer
         const subscriptions = await stripe.subscriptions.list({
@@ -243,12 +235,24 @@ app.post('/check-customer-plan', async (req, res) => {
             limit: 1,
         });
 
+        // If no subscriptions are found, return 'none'
         if (subscriptions.data.length === 0) {
-            return res.json({ plan: 'none' }); // No active subscription
+            return res.json({ plan: 'none' });
         }
 
-        const plan = subscriptions.data[0].items.data[0].plan;
-        return res.json({ plan });
+        // Extract subscription details
+        const subscription = subscriptions.data[0];
+        const plan = subscription.items.data[0].plan;
+
+        let planType = 'sigma';
+        if (plan.amount === 900) {
+            planType = 'basic';
+        } else if (plan.amount === 2500) {
+            planType = 'premium';
+        }
+
+        // Return the plan type
+        return res.json({ plan: planType });
     } catch (error) {
         console.error('Error fetching customer plan:', error);
         return res.status(500).json({ error: 'Failed to fetch customer plan' });

@@ -27,23 +27,6 @@ const Account = () => {
     ];
 
     useEffect(() => {
-        const fetchPlan = async () => {
-            try {
-                const user = auth.currentUser;
-                if (user) {
-                    const userDoc = await getDoc(doc(db, 'users', user.uid));
-                    if (userDoc.exists()) {
-                        setCurrentPlan(userDoc.data().role || 'none');
-                    }
-                }
-            } catch (error) {
-                console.error('Error fetching user plan:', error);
-            }
-        };
-        fetchPlan();
-    }, []);
-
-    useEffect(() => {
         const fetchCustomerPlan = async () => {
             try {
                 const response = await fetch('http://localhost:5002/check-customer-plan', {
@@ -51,16 +34,22 @@ const Account = () => {
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ email: auth.currentUser.email }), // Ensure this is a plain string
                 });
-        
+
                 const data = await response.json();
-                console.log('Customer Plan:', data);
+                if (data.plan) {
+                    setCurrentPlan(data.plan); // Update the current plan state
+                } else {
+                    console.error('No plan information found:', data);
+                }
             } catch (error) {
                 console.error('Error fetching customer plan:', error);
             }
         };
-    
-        fetchCustomerPlan();
-    }, [auth.currentUser]); // Ensure `userEmail` is available
+
+        if (auth.currentUser) {
+            fetchCustomerPlan();
+        }
+    }, [auth.currentUser]);
 
     const redirectToStripeCheckout = () => {
         window.location.href = 'https://buy.stripe.com/test_9AQ6q7csE7v9cco3cc';
