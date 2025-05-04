@@ -11,7 +11,7 @@ const app = express();
 const port = 5002;
 
 // Middleware
-app.use(cors({ origin: 'http://localhost:3000' })); // Allow requests from your frontend
+app.use(cors({ origin: 'http://localhost:3000' }));
 app.use(bodyParser.json());
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, { apiVersion: '2022-11-15' });
@@ -34,7 +34,7 @@ app.post('/generate-ideas', async (req, res) => {
 
     try {
         // Improved prompt to mix themes and generate combined ideas
-        const prompt = `You are a creative assistant for YouTubers. Based on the following popular video titles from three different channels, generate 3 new YouTube video ideas that appeal to a wide audience. Focus on combining the general themes and topics of these channels to create unique, creative, and relatable ideas. Don't use locations or places or cities. Avoid using specific ages, or financial statuses. Only provide the titles as plain text, separated by new lines:\n\n${popularTitles.join(
+        const prompt = `You are a creative assistant for YouTubers. Based on the following popular video titles from three different channels, generate 3 new YouTube video ideas that appeal to a wide audience combining all the channels. Focus on combining the general themes and topics of these channels to create unique, creative, and relatable ideas. Don't use locations or places or cities. Avoid using specific ages, or financial statuses. Only provide the titles as plain text, separated by new lines:\n\n${popularTitles.join(
             '\n'
         )}\n\nNew titles:`;
 
@@ -198,32 +198,62 @@ app.post('/generate-thumbnail', async (req, res) => {
 // })
 
 app.post('/check-customer-plan', async (req, res) => {
-    const { email } = req.body
+    const { email } = req.body;
 
-    if (!email) {
-        return res.status(400).json({ error: 'Email is required' })
+    // Validate that email is a string
+    if (!email || typeof email !== 'string' || !email.includes('@')) {
+        return res.status(400).json({ error: 'Invalid email format' });
     }
-
     try {
         // Search for the customer by email
-        const customers = await stripe.customers.list({
-            email,
+        console.log('Searching for customer with email:', email);
+        const normalizedEmail = email.toLowerCase();
+
+        // Capitalize the first letter of the email
+        const capitalizedEmail =
+            normalizedEmail.charAt(0).toUpperCase() + normalizedEmail.slice(1);
+
+        // Try searching with the normalized email
+        let customers = await stripe.customers.list({
+            email: normalizedEmail,
             limit: 1,
-        })
+        });
+
+        // If no customers are found, try searching with the capitalized email
+        if (customers.data.length === 0) {
+            console.log('No customers found with normalized email. Trying capitalized email...');
+            customers = await stripe.customers.list({
+                email: capitalizedEmail,
+                limit: 1,
+            });
+        }
+        console.log('Customers found:', customers.data);
 
         if (customers.data.length === 0) {
-            return res.status(404).json({ error: 'Customer not found' })
+            return res.status(404).json({ error: 'Customer not found' });
         }
 
         // Customer exists
-        const customer = customers.data[0]
-        console.log('Customer found:', customer)
-        return res.json({ exists: true, customerId: customer.id })
+        const customer = customers.data[0];
+        console.log('Customer found:', customers);
+
+        // Fetch subscriptions for the customer
+        const subscriptions = await stripe.subscriptions.list({
+            customer: customer.id,
+            limit: 1,
+        });
+
+        if (subscriptions.data.length === 0) {
+            return res.json({ plan: 'none' }); // No active subscription
+        }
+
+        const plan = subscriptions.data[0].items.data[0].plan;
+        return res.json({ plan });
     } catch (error) {
-        console.error('Error checking customer existence:', error)
-        return res.status(500).json({ error: 'Failed to check customer existence' })
+        console.error('Error fetching customer plan:', error);
+        return res.status(500).json({ error: 'Failed to fetch customer plan' });
     }
-})
+});
 
 // Start the server
 app.listen(port, () => {

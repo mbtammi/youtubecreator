@@ -43,6 +43,25 @@ const Account = () => {
         fetchPlan();
     }, []);
 
+    useEffect(() => {
+        const fetchCustomerPlan = async () => {
+            try {
+                const response = await fetch('http://localhost:5002/check-customer-plan', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: auth.currentUser.email }), // Ensure this is a plain string
+                });
+        
+                const data = await response.json();
+                console.log('Customer Plan:', data);
+            } catch (error) {
+                console.error('Error fetching customer plan:', error);
+            }
+        };
+    
+        fetchCustomerPlan();
+    }, [auth.currentUser]); // Ensure `userEmail` is available
+
     const redirectToStripeCheckout = () => {
         window.location.href = 'https://buy.stripe.com/test_9AQ6q7csE7v9cco3cc';
     };
