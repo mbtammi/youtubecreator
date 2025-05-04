@@ -103,12 +103,12 @@ const Account = () => {
 
 const styles = {
     container: {
-        maxWidth: '800px',
+        //maxWidth: '800px',
         margin: '0 auto',
         padding: '20px',
         textAlign: 'center',
         minHeight: '70vh',
-        borderRadius: '10px',
+        backgroundColor: '#f9f9f9',
     },
     title: {
         fontSize: '2.5rem',

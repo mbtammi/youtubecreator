@@ -5,7 +5,7 @@ import { auth } from '../services/Firebase';
 import { useNavigate } from 'react-router-dom';
 
 const HomePage = () => {
-    const [channelNames, setChannelNames] = useState(['', '', '']);
+    const [channelNames, setChannelNames] = useState([]);
     const [videos, setVideos] = useState([]);
     const [loading, setLoading] = useState(false);
     const [generatedThumbnail, setGeneratedThumbnail] = useState(null);
@@ -15,6 +15,7 @@ const HomePage = () => {
     const [activeInputIndex, setActiveInputIndex] = useState(null);
     const [loadingIdeaIndex, setLoadingIdeaIndex] = useState(null);
     const [user, setUser] = useState(null)
+    const [userPlan, setUserPlan] = useState('none');
     const navigate = useNavigate(); // For programmatic navigation
 
     // Debounce function to delay API calls
@@ -25,6 +26,36 @@ const HomePage = () => {
             timer = setTimeout(() => func(...args), delay);
         };
     };
+
+    useEffect(() => {
+        const fetchUserPlan = async () => {
+            try {
+                const response = await fetch('http://localhost:5002/check-customer-plan', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: auth.currentUser.email }),
+                });
+
+                const data = await response.json();
+                if (data.plan) {
+                    console.log('User plan:', data.plan);
+                    setUserPlan(data.plan); // Set the user's plan
+                    setChannelNames(Array(data.plan === 'basic' ? 3 : 5).fill(''));
+                } else {
+                    setUserPlan('none'); // Default to 'none' if no plan is found
+                }
+            } catch (error) {
+                console.error('Error fetching user plan:', error);
+                setUserPlan('none'); // Default to 'none' on error
+            }
+        };
+
+        if (auth.currentUser) {
+            fetchUserPlan();
+        } else {
+            navigate('/signin'); // Redirect to sign-in if the user is not authenticated
+        }
+    }, [navigate]);
 
     // Fetch suggestions when the user types
     const fetchSuggestions = debounce(async (query, index) => {
@@ -177,142 +208,113 @@ const HomePage = () => {
 
   return (
     <div style={styles.container}>
-    <header style={styles.header}>
-        <h1 style={styles.title}>Creator Inspiration Engine</h1>
-        <p style={styles.subtitle}>Enter up to 3 YouTuber names to fetch their latest videos:</p>
-        <div style={styles.inputContainer}>
-        {channelNames.map((channelName, index) => (
-          <div key={index} style={styles.inputWrapper}>
-              <input
-                  type='text'
-                  placeholder={`YouTuber Name ${index + 1}`}
-                  value={channelName}
-                  onChange={(e) => handleInputChange(index, e.target.value)}
-                  onKeyPress={(e) => handleKeyPress(e, index)} // Trigger search on Enter key press
-                  style={styles.input}
-              />
-              {/* Suggestions Dropdown */}
-              {activeInputIndex === index && suggestions.length > 0 && (
-                  <ul style={styles.suggestionsList}>
-                      {suggestions.map((suggestion, i) => (
-                          <li
-                              key={i}
-                              style={styles.suggestionItem}
-                              onClick={() => handleSuggestionClick(suggestion)}
-                          >
-                              {suggestion}
-                          </li>
-                      ))}
-                  </ul>
-              )}
-          </div>
-      ))}
-        </div>
-        <div style={styles.checkboxContainer}>
-          <label style={styles.checkboxLabel}>
-            <input
-              type="checkbox"
-              checked={excludeShorts}
-              onChange={(e) => setExcludeShorts(e.target.checked)}
-              style={styles.checkbox}
-            />
-            Exclude Shorts (videos under 60 seconds)
-          </label>
-        </div>
-        <div style={styles.buttonContainer}>
-            {user ? (
-                <button onClick={handleFetchVideos} disabled={loading} style={styles.button}>
-                    {loading ? 'Fetching...' : 'Fetch Videos'}
-                </button>
-            ) : (
-                <button onClick={() => navigate('/signin')} style={styles.button}>
-                    Sign In to Fetch Videos
-                </button>
-            )}
-        </div>
-        {videos.length > 0 && (
-          <div style={styles.buttonContainer}>
-            <button onClick={handleGenerateIdeas} style={styles.button}>
-              Generate Video Ideas
-            </button>
-          </div>
-        )}
-        {videoIdeas.length > 0 && (
-            <div style={styles.ideasContainer}>
-                <h2 style={styles.sectionTitle}>Generated Video Ideas:</h2>
-                <ul style={styles.ideasList}>
-                    {videoIdeas.map((idea, index) => (
-                        <li key={index} style={styles.ideaItem}>
-                            <div style={styles.ideaRow}>
-                                <p style={styles.ideaText}>Title: </p>
-                                <p style={styles.ideaText}>{idea}</p>
-                                <span
-                                    style={{
-                                        ...styles.thumbnailIcon,
-                                        cursor: loadingIdeaIndex === index ? 'not-allowed' : 'pointer',
-                                        opacity: loadingIdeaIndex === index ? 0.5 : 1,
-                                    }}
-                                    onClick={() => handleGenerateThumbnail(idea, index)}
-                                >
-                                    {loadingIdeaIndex === index ? '⏳' : '🖼️'}
-                                </span>
-                            </div>
-                        </li>
-                    ))}
-                </ul>
-                {/* Reserved space for the thumbnail or placeholder */}
-                <div style={styles.thumbnailContainer}>
-                    {loadingIdeaIndex !== null && (
-                        <div style={styles.thumbnailPlaceholder}>
-                            <p style={styles.loadingText}>Generating thumbnail, please wait...</p>
+            <header style={styles.header}>
+                <h1 style={styles.title}>Creator Inspiration Engine</h1>
+                <p style={styles.subtitle}>
+                    {userPlan === 'basic'
+                        ? 'Enter up to 3 YouTuber names to fetch their latest videos:'
+                        : 'Enter up to 5 YouTuber names to fetch their latest videos:'}
+                </p>
+                <div style={styles.inputContainer}>
+                    {channelNames.slice(0, userPlan === 'sigma' ? 5 : 6).map((channelName, index) => (
+                        <div key={index} style={styles.inputWrapper}>
+                            <input
+                                type='text'
+                                placeholder={`YouTuber Name ${index + 1}`}
+                                value={channelName}
+                                onChange={(e) => handleInputChange(index, e.target.value)}
+                                onKeyPress={(e) => handleKeyPress(e, index)}
+                                style={styles.input}
+                            />
+                            {/* Suggestions Dropdown */}
+                            {activeInputIndex === index && suggestions.length > 0 && (
+                                <ul style={styles.suggestionsList}>
+                                    {suggestions.map((suggestion, i) => (
+                                        <li
+                                            key={i}
+                                            style={styles.suggestionItem}
+                                            onClick={() => handleSuggestionClick(suggestion)}
+                                        >
+                                            {suggestion}
+                                        </li>
+                                    ))}
+                                </ul>
+                            )}
                         </div>
-                    )}
-                    {generatedThumbnail && (
-                        <img
-                            src={generatedThumbnail}
-                            alt='Generated Thumbnail'
-                            style={styles.thumbnailImage}
+                    ))}
+                </div>
+                <div style={styles.checkboxContainer}>
+                    <label style={styles.checkboxLabel}>
+                        <input
+                            type='checkbox'
+                            checked={excludeShorts}
+                            onChange={(e) => setExcludeShorts(e.target.checked)}
+                            style={styles.checkbox}
                         />
+                        Exclude Shorts (videos under 60 seconds)
+                    </label>
+                </div>
+                <div style={styles.buttonContainer}>
+                    {user ? (
+                        <button onClick={handleFetchVideos} disabled={loading} style={styles.button}>
+                            {loading ? 'Fetching...' : 'Fetch Videos'}
+                        </button>
+                    ) : (
+                        <button onClick={() => navigate('/signin')} style={styles.button}>
+                            Sign In to Fetch Videos
+                        </button>
                     )}
                 </div>
-            </div>
-        )}
-        <div style={styles.videoListContainer}>
-          {videos.length > 0 && <h2 style={styles.sectionTitle}>Top Videos:</h2>}
-          <div style={styles.videoGrid}>
-              {videos.map((video, index) => (
-                  <div key={index} style={styles.videoCard}>
-                      <img src={video.thumbnail} alt={video.title} style={styles.thumbnail} />
-                      <div>
-                          <p style={styles.videoTitle}>{video.title}</p>
-                          <div style={styles.videoStats}>
-                              <span style={styles.statItem}>
-                                  <span style={styles.icon}>👁️</span> {video.views}
-                              </span>
-                              <span style={styles.statItem}>
-                                  <span style={styles.icon}>👍</span> {video.likes}
-                              </span>
-                              <span style={styles.statItem}>
-                                  <span style={styles.icon}>💬</span> {video.comments}
-                              </span>
-                          </div>
-                          <a
-                              href={`https://www.youtube.com/watch?v=${video.videoId}`}
-                              target='_blank'
-                              rel='noopener noreferrer'
-                              style={styles.link}
-                          >
-                              Watch Video
-                          </a>
-                      </div>
-                  </div>
-              ))}
-          </div>
-      </div>
-      </header>
-    </div>
-  );
-}
+                {videos.length > 0 && (
+                    <div style={styles.buttonContainer}>
+                        <button onClick={handleGenerateIdeas} style={styles.button}>
+                            Generate Video Ideas
+                        </button>
+                    </div>
+                )}
+                {videoIdeas.length > 0 && (
+                    <div style={styles.ideasContainer}>
+                        <h2 style={styles.sectionTitle}>Generated Video Ideas:</h2>
+                        <ul style={styles.ideasList}>
+                            {videoIdeas.map((idea, index) => (
+                                <li key={index} style={styles.ideaItem}>
+                                    <div style={styles.ideaRow}>
+                                        <p style={styles.ideaText}>Title: </p>
+                                        <p style={styles.ideaText}>{idea}</p>
+                                        <span
+                                            style={{
+                                                ...styles.thumbnailIcon,
+                                                cursor: loadingIdeaIndex === index ? 'not-allowed' : 'pointer',
+                                                opacity: loadingIdeaIndex === index ? 0.5 : 1,
+                                            }}
+                                            onClick={() => handleGenerateThumbnail(idea, index)}
+                                        >
+                                            {loadingIdeaIndex === index ? '⏳' : '🖼️'}
+                                        </span>
+                                    </div>
+                                </li>
+                            ))}
+                        </ul>
+                        <div style={styles.thumbnailContainer}>
+                            {loadingIdeaIndex !== null && (
+                                <div style={styles.thumbnailPlaceholder}>
+                                    <p style={styles.loadingText}>Generating thumbnail, please wait...</p>
+                                </div>
+                            )}
+                            {generatedThumbnail && (
+                                <img
+                                    src={generatedThumbnail}
+                                    alt='Generated Thumbnail'
+                                    style={styles.thumbnailImage}
+                                />
+                            )}
+                        </div>
+                    </div>
+                )}
+            </header>
+        </div>
+    );
+};
 
 const styles = {
   container: {
