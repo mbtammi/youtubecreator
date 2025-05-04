@@ -39,7 +39,7 @@ const HomePage = () => {
                 const data = await response.json();
                 if (data.plan) {
                     console.log('User plan:', data.plan);
-                    setUserPlan(data.plan); // Set the user's plan
+                    setUserPlan(data.plan);
                     setChannelNames(Array(data.plan === 'basic' ? 3 : 5).fill(''));
                 } else {
                     setUserPlan('none'); // Default to 'none' if no plan is found
@@ -273,47 +273,80 @@ const HomePage = () => {
                     </div>
                 )}
                 {videoIdeas.length > 0 && (
-                    <div style={styles.ideasContainer}>
-                        <h2 style={styles.sectionTitle}>Generated Video Ideas:</h2>
-                        <ul style={styles.ideasList}>
-                            {videoIdeas.map((idea, index) => (
-                                <li key={index} style={styles.ideaItem}>
-                                    <div style={styles.ideaRow}>
-                                        <p style={styles.ideaText}>Title: </p>
-                                        <p style={styles.ideaText}>{idea}</p>
-                                        <span
-                                            style={{
-                                                ...styles.thumbnailIcon,
-                                                cursor: loadingIdeaIndex === index ? 'not-allowed' : 'pointer',
-                                                opacity: loadingIdeaIndex === index ? 0.5 : 1,
-                                            }}
-                                            onClick={() => handleGenerateThumbnail(idea, index)}
-                                        >
-                                            {loadingIdeaIndex === index ? '⏳' : '🖼️'}
-                                        </span>
-                                    </div>
-                                </li>
-                            ))}
-                        </ul>
-                        <div style={styles.thumbnailContainer}>
-                            {loadingIdeaIndex !== null && (
-                                <div style={styles.thumbnailPlaceholder}>
-                                    <p style={styles.loadingText}>Generating thumbnail, please wait...</p>
-                                </div>
-                            )}
-                            {generatedThumbnail && (
-                                <img
-                                    src={generatedThumbnail}
-                                    alt='Generated Thumbnail'
-                                    style={styles.thumbnailImage}
-                                />
-                            )}
+            <div style={styles.ideasContainer}>
+                <h2 style={styles.sectionTitle}>Generated Video Ideas:</h2>
+                <ul style={styles.ideasList}>
+                    {videoIdeas.map((idea, index) => (
+                        <li key={index} style={styles.ideaItem}>
+                            <div style={styles.ideaRow}>
+                                <p style={styles.ideaText}>Title: </p>
+                                <p style={styles.ideaText}>{idea}</p>
+                                <span
+                                    style={{
+                                        ...styles.thumbnailIcon,
+                                        cursor: loadingIdeaIndex === index ? 'not-allowed' : 'pointer',
+                                        opacity: loadingIdeaIndex === index ? 0.5 : 1,
+                                    }}
+                                    onClick={() => handleGenerateThumbnail(idea, index)}
+                                >
+                                    {loadingIdeaIndex === index ? '⏳' : '🖼️'}
+                                </span>
+                            </div>
+                        </li>
+                    ))}
+                </ul>
+                {/* Reserved space for the thumbnail or placeholder */}
+                <div style={styles.thumbnailContainer}>
+                    {loadingIdeaIndex !== null && (
+                        <div style={styles.thumbnailPlaceholder}>
+                            <p style={styles.loadingText}>Generating thumbnail, please wait...</p>
                         </div>
-                    </div>
-                )}
-            </header>
-        </div>
-    );
+                    )}
+                    {generatedThumbnail && (
+                        <img
+                            src={generatedThumbnail}
+                            alt='Generated Thumbnail'
+                            style={styles.thumbnailImage}
+                        />
+                    )}
+                </div>
+            </div>
+        )}
+        <div style={styles.videoListContainer}>
+          {videos.length > 0 && <h2 style={styles.sectionTitle}>Top Videos:</h2>}
+          <div style={styles.videoGrid}>
+              {videos.map((video, index) => (
+                  <div key={index} style={styles.videoCard}>
+                      <img src={video.thumbnail} alt={video.title} style={styles.thumbnail} />
+                      <div>
+                          <p style={styles.videoTitle}>{video.title}</p>
+                          <div style={styles.videoStats}>
+                              <span style={styles.statItem}>
+                                  <span style={styles.icon}>👁️</span> {video.views}
+                              </span>
+                              <span style={styles.statItem}>
+                                  <span style={styles.icon}>👍</span> {video.likes}
+                              </span>
+                              <span style={styles.statItem}>
+                                  <span style={styles.icon}>💬</span> {video.comments}
+                              </span>
+                          </div>
+                          <a
+                              href={`https://www.youtube.com/watch?v=${video.videoId}`}
+                              target='_blank'
+                              rel='noopener noreferrer'
+                              style={styles.link}
+                          >
+                              Watch Video
+                          </a>
+                      </div>
+                  </div>
+              ))}
+          </div>
+      </div>
+      </header>
+    </div>
+  );
 };
 
 const styles = {
