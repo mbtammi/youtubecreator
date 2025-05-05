@@ -211,16 +211,22 @@ const HomePage = () => {
             <header style={styles.header}>
                 <h1 style={styles.title}>Creator Inspiration Engine</h1>
                 <p style={styles.subtitle}>
-                    {userPlan === 'basic'
-                        ? 'Enter up to 3 YouTuber names to fetch their latest videos:'
-                        : 'Enter up to 5 YouTuber names to fetch their latest videos:'}
+                {userPlan === 'basic' ? (
+                    <>
+                        Enter up to 3 YouTuber names by pressing <strong>Enter</strong> to fetch their latest videos:
+                    </>
+                ) : (
+                    <>
+                        Enter up to 5 YouTuber names by pressing <strong>Enter</strong> to fetch their latest videos:
+                    </>
+                )}
                 </p>
                 <div style={styles.inputContainer}>
-                    {channelNames.slice(0, userPlan === 'sigma' ? 5 : 6).map((channelName, index) => (
+                    {channelNames.slice(0, userPlan === 'basic' ? 3 : 5).map((channelName, index) => (
                         <div key={index} style={styles.inputWrapper}>
                             <input
                                 type='text'
-                                placeholder={`YouTuber Name ${index + 1}`}
+                                placeholder={`YouTuber ${index + 1}`}
                                 value={channelName}
                                 onChange={(e) => handleInputChange(index, e.target.value)}
                                 onKeyPress={(e) => handleKeyPress(e, index)}
