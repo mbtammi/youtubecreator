@@ -52,6 +52,26 @@ const LandingPage = () => {
                     </div>
                 </div>
             </header>
+            <section style={styles.howItWorksSection}>
+                <h2 style={styles.howItWorksTitle}>How This Works</h2>
+                <p style={styles.howItWorksText}>
+                    Our platform is designed to help you take your YouTube channel to the next level. Here's how it works:
+                </p>
+                <ol style={styles.howItWorksList}>
+                    <li style={styles.howItWorksItem}>
+                        <strong>Choose Relevant YouTubers:</strong> Enter the names of YouTubers whose content aligns with your niche. We'll fetch their latest 10 most popular videos so you know the ideas work!.
+                    </li>
+                    <li style={styles.howItWorksItem}>
+                        <strong>Generate Video Ideas:</strong> With the help of AI, we analyze the fetched videos and generate unique, data-driven video ideas tailored to your channel.
+                    </li>
+                    <li style={styles.howItWorksItem}>
+                        <strong>Create Stunning Thumbnails:</strong> Use our AI-powered thumbnail generator to create eye-catching mockups that make your videos stand out.
+                    </li>
+                </ol>
+                <p style={styles.howItWorksText}>
+                    Whether you're just starting out or looking to grow your channel, our tools are here to help you create content that captivates and engages your audience.
+                </p>
+            </section>
             <section style={styles.featuresSection}>
                 <h2 style={styles.sectionTitle}>Why Choose Us?</h2>
                 <div style={styles.featuresGrid}>
@@ -111,7 +131,8 @@ const styles = {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        marginBlock: '6%',
+        marginTop: '3%',
+        marginBottom: '6%',
     },
     screenshots: {
         position: 'relative',
@@ -124,7 +145,7 @@ const styles = {
         height: '100%',
         borderRadius: '10px',
         boxShadow: '0 4px 6px rgba(0, 0, 0, 0.2)',
-        animation: 'scaleUpDown 3s infinite ease-in-out',
+        // animation: 'scaleUpDown 3s infinite ease-in-out',
     },
     leftTilt: {
         transform: 'rotate(-15deg)',
@@ -212,6 +233,7 @@ const styles = {
         backgroundColor: '#FFD60A',
         color: '#1c1c1c',
         textDecoration: 'none',
+        minWidth: '30%',
         padding: '20px 50px',
         borderRadius: '5px',
         fontSize: '1.5rem',
@@ -236,6 +258,13 @@ const styles = {
         marginBottom: '30px',
         fontWeight: 'bold',
         textShadow: '1px 1px 3px rgba(0, 0, 0, 0.2)',
+    },
+    howItWorksTitle: {
+        color: 'black',
+        marginBottom: '30px',
+        fontWeight: 'bold',
+        textShadow: '1px 1px 3px rgba(0, 0, 0, 0.2)',
+        fontSize: '2.5rem',
     },
     featuresGrid: {
         display: 'grid',
@@ -268,6 +297,33 @@ const styles = {
     featureIcon: {
         marginLeft: '8px', // Space between the title and the emoji
         fontSize: '1.2rem', // Slightly smaller than the title
+    },
+    howItWorksSection: {
+    textAlign: 'center',
+    padding: '40px 20px',
+    background: 'linear-gradient(to bottom,rgb(220, 234, 255), #e5e5e5)', // Subtle gradient
+    borderRadius: '10px',
+    marginTop: '40px',
+    boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Add a soft shadow for depth
+    position: 'relative', // Required for the optional pattern overlay
+    overflow: 'hidden', // Ensures the pattern doesn't overflow the section
+    },
+    howItWorksText: {
+        fontSize: '1.2rem',
+        color: 'black',
+        lineHeight: '1.8',
+        marginBottom: '20px',
+    },
+    howItWorksList: {
+        listStyleType: 'decimal',
+        paddingLeft: '20px',
+        textAlign: 'left',
+        color: 'black',
+    },
+    howItWorksItem: {
+        fontSize: '1.1rem',
+        marginBottom: '15px',
+        lineHeight: '1.6',
     },
 };
 

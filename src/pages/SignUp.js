@@ -28,6 +28,7 @@ const SignUp = () => {
             await setDoc(doc(db, 'users', user.uid), {
                 email: user.email,
                 role: 'basic', // Default role
+                displayName: user.email.split('@')[0],
                 paymentStartDate: null,
                 paymentEndDate: null,
             })

@@ -55,7 +55,7 @@ const Header = () => {
                                 style={styles.userName}
                                 onClick={toggleDropdown} // Toggle dropdown on click
                             >
-                                {user.displayName || 'User'}
+                                {user.displayName || user.email.split('@')[0] || 'User'}
                             </span>
                             {dropdownVisible && (
                                 <div style={styles.dropdownMenu}>

@@ -261,13 +261,13 @@ const HomePage = () => {
                     </label>
                 </div>
                 <div style={styles.buttonContainer}>
-                    {user ? (
+                    {userPlan !== 'none' ? (
                         <button onClick={handleFetchVideos} disabled={loading} style={styles.button}>
                             {loading ? 'Fetching...' : 'Fetch Videos'}
                         </button>
                     ) : (
-                        <button onClick={() => navigate('/signin')} style={styles.button}>
-                            Sign In to Fetch Videos
+                        <button onClick={() => navigate('/pricing')} style={styles.button}>
+                            Choose a plan to Fetch Videos
                         </button>
                     )}
                 </div>
