@@ -6,7 +6,7 @@ const Account = () => {
     const [loading, setLoading] = useState(false);
     const [tokensRemaining, setTokensRemaining] = useState(0) // Tokens left for the month
     const [thumbnailsRemaining, setThumbnailsRemaining] = useState(0) // Thumbnails left for the month
-    const [selectedPlan, setSelectedPlan] = useState('basic'); // Default to Basic plan
+    const [selectedPlan, setSelectedPlan] = useState('premium'); // Default to Basic plan
 
     const plans = [
         {

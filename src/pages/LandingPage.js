@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './LandingPage.css';
+import { FaYoutube } from 'react-icons/fa';
 
 const LandingPage = () => {
     return (
@@ -26,11 +27,13 @@ const LandingPage = () => {
                     </div>
                     <div style={styles.arrowContainer}>
                         <img
-                            src={require('../images/arrow4.png')}
+                            src={require('../images/arrow1nobg.png')}
                             alt='Arrow'
                             style={styles.arrow}
                         />
-                        <p style={styles.arrowText}>Perfect Video</p>
+                        <div style={styles.videoFrame}>
+                            <p style={styles.arrowText}>Perfect Video</p>
+                        </div>
                     </div>
                 </div>
                 <div style={styles.heroSection}>
@@ -49,7 +52,13 @@ const LandingPage = () => {
                         <Link to='/account' style={styles.ctaButton}>
                             Join Now
                         </Link>
+                        <a href='#' style={styles.videoLink}>
+                        <FaYoutube style={styles.videoIcon} /> See how it works
+                        </a>
                     </div>
+                    <p style={styles.joinText}>
+                        Join other successful creators who are transforming their content with data-driven insights and AI-powered tools.
+                    </p>
                 </div>
             </header>
             <section style={styles.howItWorksSection}>
@@ -132,12 +141,12 @@ const styles = {
         alignItems: 'center',
         justifyContent: 'center',
         marginTop: '3%',
-        marginBottom: '6%',
+        marginBottom: '8%',
     },
     screenshots: {
         position: 'relative',
-        width: '250px',
-        height: '150px',
+        width: '18em', // Set the width to 18em
+        aspectRatio: '16 / 9',
     },
     screenshot: {
         position: 'absolute',
@@ -177,13 +186,13 @@ const styles = {
     arrow: {
         width: '150px',
         height: 'auto',
-        transform: 'rotate(-180deg)',
+        transform: 'rotate(30deg)',
     },
     arrowText: {
-        marginLeft: '10px',
-        fontSize: '2.8rem',
+        fontSize: '2.4rem',
         color: '#FFD60A',
-        fontWeight: 'bold',
+        // fontWeight: 'bold',
+        fontStyle: 'italic',
         padding: '10px',
         textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)', // Added shadow for better readability
         animation: 'fadeIn 2s ease-in-out', // Fade-in animation for the text
@@ -235,7 +244,7 @@ const styles = {
         textDecoration: 'none',
         minWidth: '30%',
         padding: '20px 50px',
-        borderRadius: '5px',
+        borderRadius: '50px',
         fontSize: '1.5rem',
         fontWeight: 'bold',
         transition: 'transform 0.3s ease, background-color 0.3s ease',
@@ -324,6 +333,44 @@ const styles = {
         fontSize: '1.1rem',
         marginBottom: '15px',
         lineHeight: '1.6',
+    },
+    joinText: {
+        marginTop: '20px',
+        fontSize: '1.2rem',
+        color: '#cbd5e1', // Light gray for readability
+        textAlign: 'center',
+        lineHeight: '1.6',
+    },
+    videoLink: {
+        display: 'flex',
+        alignItems: 'center',
+        marginLeft: '20px', // Space between the button and the link
+        color: '#FFD60A', // Match the button color
+        textDecoration: 'none',
+        fontSize: '1.2rem',
+        fontWeight: 'bold',
+        transition: 'color 0.3s ease',
+        cursor: 'pointer',
+    },
+    videoIcon: {
+        marginRight: '8px', // Space between the icon and the text
+        fontSize: '1.5rem',
+    },
+    videoLinkHover: {
+        color: '#FFC107', // Slightly lighter color on hover
+    },
+    videoFrame: {
+        marginLeft: '2em',
+        width: '19em', // Match the width of the screenshots
+        aspectRatio: '16 / 9',
+        borderRadius: '10px',
+        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.2)',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        overflow: 'hidden', // Ensure content stays within the frame
+        position: 'relative',
+        border: '1px solid #FFD60A', 
     },
 };
 

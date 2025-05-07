@@ -322,16 +322,18 @@ const HomePage = () => {
                             <div style={styles.ideaRow}>
                                 <p style={styles.ideaText}>Title: </p>
                                 <p style={styles.ideaText}>{idea}</p>
-                                <span
-                                    style={{
-                                        ...styles.thumbnailIcon,
-                                        cursor: loadingIdeaIndex === index ? 'not-allowed' : 'pointer',
-                                        opacity: loadingIdeaIndex === index ? 0.5 : 1,
-                                    }}
-                                    onClick={() => handleGenerateThumbnail(idea, index)}
-                                >
-                                    {loadingIdeaIndex === index ? '⏳' : '🖼️'}
-                                </span>
+                                {userPlan !== 'basic' && (
+                                    <span
+                                        style={{
+                                            ...styles.thumbnailIcon,
+                                            cursor: loadingIdeaIndex === index ? 'not-allowed' : 'pointer',
+                                            opacity: loadingIdeaIndex === index ? 0.5 : 1,
+                                        }}
+                                        onClick={() => handleGenerateThumbnail(idea, index)}
+                                    >
+                                        {loadingIdeaIndex === index ? '⏳' : '🖼️'}
+                                    </span>
+                                )}
                             </div>
                         </li>
                     ))}

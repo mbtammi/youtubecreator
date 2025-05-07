@@ -34,7 +34,7 @@ app.post('/generate-ideas', async (req, res) => {
 
     try {
         // Improved prompt to mix themes and generate combined ideas
-        const prompt = `You are a creative assistant for YouTubers. Based on the following popular video titles from three different channels, generate 3 new YouTube video ideas that appeal to a wide audience combining all the channels. Focus on combining the general themes and topics of these channels to create unique, creative, and relatable ideas. Don't use locations or places or cities. Avoid using specific ages, or financial statuses. Only provide the titles as plain text, separated by new lines:\n\n${popularTitles.join(
+        const prompt = `You are a creative assistant for YouTubers. Based on the following popular video titles from three different channels, generate 3 new YouTube video ideas that appeal to a wide audience by creatively combining the themes, styles, and topics of these channels. Focus on generating ideas that are engaging, relatable, and unique, while avoiding niche-specific jargon or overly complex concepts. Do not include locations, specific ages, or financial statuses. Only provide the titles as plain text, separated by new lines:\n\n${popularTitles.join(
             '\n'
         )}\n\nNew titles:`;
 
@@ -116,7 +116,8 @@ app.post('/generate-thumbnail', async (req, res) => {
 
     try {
         const input = {
-            prompt: idea,
+            prompt: `Create an interesting and attractive image about ${idea}`,
+            negative_prompt: 'bad quality, blurry, low resolution',
             aspect_ratio: '16:9',
             num_outputs: 1,
             output_quality: 80,
