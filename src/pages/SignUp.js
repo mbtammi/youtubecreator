@@ -31,6 +31,10 @@ const SignUp = () => {
                 displayName: user.email.split('@')[0],
                 paymentStartDate: null,
                 paymentEndDate: null,
+                tokensUsed: 0,
+                tokensLimit: 100,
+                thumbnailsUsed: 0,
+                thumbnailsLimit: 40
             })
 
             setSuccess('Account created successfully!')
@@ -41,12 +45,34 @@ const SignUp = () => {
 
     const handleGoogleSignUp = async () => {
         try {
+            // Sign in with Google
             const result = await signInWithPopup(auth, googleProvider)
             const user = result.user
+    
+            // Check if the user already exists in Firestore
+            const userDocRef = doc(db, 'users', user.uid)
+            const userDoc = await userDocRef.get()
+    
+            if (!userDoc.exists()) {
+                // If the user doesn't exist, create a new document with default values
+                await setDoc(userDocRef, {
+                    email: user.email,
+                    role: 'none', // Default role
+                    displayName: user.displayName || user.email.split('@')[0],
+                    paymentStartDate: null,
+                    paymentEndDate: null,
+                    tokensUsed: 0,
+                    tokensLimit: 100,
+                    thumbnailsUsed: 0,
+                    thumbnailsLimit: 40,
+                })
+            }
+    
             console.log('Google Sign-Up Successful:', user)
-            // Handle user data (e.g., save to database or update UI)
+            setSuccess('Google Sign-Up Successful!')
         } catch (error) {
             console.error('Google Sign-Up Error:', error)
+            setError('Failed to sign up with Google. Please try again.')
         }
     }
 

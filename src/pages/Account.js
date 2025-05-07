@@ -4,6 +4,8 @@ import { auth, db, doc, getDoc } from '../services/Firebase';
 const Account = () => {
     const [currentPlan, setCurrentPlan] = useState('none'); // Default to "none"
     const [loading, setLoading] = useState(false);
+    const [tokensRemaining, setTokensRemaining] = useState(0) // Tokens left for the month
+    const [thumbnailsRemaining, setThumbnailsRemaining] = useState(0) // Thumbnails left for the month
     const [selectedPlan, setSelectedPlan] = useState('basic'); // Default to Basic plan
 
     const plans = [
@@ -27,29 +29,65 @@ const Account = () => {
     ];
 
     useEffect(() => {
-        const fetchCustomerPlan = async () => {
+        const fetchUserPlan = async () => {
             try {
                 const response = await fetch('http://localhost:5002/check-customer-plan', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email: auth.currentUser.email }), // Ensure this is a plain string
+                    body: JSON.stringify({ email: auth.currentUser.email }),
                 });
 
                 const data = await response.json();
                 if (data.plan) {
-                    setCurrentPlan(data.plan); // Update the current plan state
+                    console.log('User plan:', data.plan);
+                    setCurrentPlan(data.plan);
                 } else {
-                    console.error('No plan information found:', data);
+                    setCurrentPlan('none'); // Default to 'none' if no plan is found
                 }
             } catch (error) {
-                console.error('Error fetching customer plan:', error);
+                console.error('Error fetching user plan:', error);
+                setCurrentPlan('none'); // Default to 'none' on error
             }
         };
 
         if (auth.currentUser) {
-            fetchCustomerPlan();
+            fetchUserPlan();
+        } else {
         }
-    }, [auth.currentUser]);
+    }, []);
+
+    useEffect(() => {
+        const fetchCustomerData = async () => {
+            try {
+                // Fetch user data from Firestore
+                const userDocRef = doc(db, 'users', auth.currentUser.uid)
+                const userDoc = await getDoc(userDocRef)
+
+                if (userDoc.exists()) {
+                    const userData = userDoc.data()
+                    // setCurrentPlan(userData.role || 'none') 
+                    const tokensLeft = userData.tokensLimit - userData.tokensUsed
+                    setTokensRemaining(tokensLeft > 0 ? tokensLeft : 0) // Ensure no negative values
+
+                    // Calculate remaining thumbnails if the user has a premium or sigma plan
+                    if (userData.role === 'premium' || userData.role === 'sigma') {
+                        const thumbnailsLeft = userData.thumbnailsLimit - userData.thumbnailsUsed
+                        setThumbnailsRemaining(thumbnailsLeft > 0 ? thumbnailsLeft : 0) // Ensure no negative values
+                    } else {
+                        setThumbnailsRemaining(0) // No thumbnails for basic users
+                    }
+                } else {
+                    console.error('User document does not exist in Firestore.')
+                }
+            } catch (error) {
+                console.error('Error fetching user data:', error)
+            }
+        }
+
+        if (auth.currentUser) {
+            fetchCustomerData()
+        }
+    }, [auth.currentUser])
 
     const redirectToStripeCheckout = () => {
         window.location.href = 'https://buy.stripe.com/test_9AQ6q7csE7v9cco3cc';
@@ -97,6 +135,14 @@ const Account = () => {
             <p style={styles.currentPlan}>
                 Your current plan: <strong>{currentPlan}</strong>
             </p>
+            <p style={styles.tokenInfo}>
+                Tokens remaining this month: <strong>{tokensRemaining}</strong>
+            </p>
+            {(currentPlan === 'premium' || currentPlan === 'sigma') && (
+                <p style={styles.thumbnailInfo}>
+                    Thumbnails remaining this month: <strong>{thumbnailsRemaining}</strong>
+                </p>
+            )}
         </div>
     );
 };
@@ -186,6 +232,16 @@ const styles = {
         fontSize: '1rem',
         color: '#475569',
         marginTop: '20px',
+    },
+    tokenInfo: {
+        fontSize: '1rem',
+        color: '#475569',
+        marginTop: '10px',
+    },
+    thumbnailInfo: {
+        fontSize: '1rem',
+        color: '#475569',
+        marginTop: '10px',
     },
 };
 

@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { fetchChannelIdByName, fetchChannelVideos, fetchYouTuberSuggestions } from '../services/youtubeAPI';
+import { doc, getDoc, updateDoc } from '../services/Firebase'
 import { generateVideoIdeas } from '../services/openaiAPI';
-import { auth } from '../services/Firebase';
+import { auth, db } from '../services/Firebase';
 import { useNavigate } from 'react-router-dom';
 
 const HomePage = () => {
@@ -139,54 +140,88 @@ const HomePage = () => {
     const handleFetchVideos = async () => {
         setLoading(true);
         const allVideos = [];
-
-        for (const channelName of channelNames) {
-            if (channelName.trim()) {
-                const channelId = await fetchChannelIdByName(channelName);
-                if (channelId) {
-                    let channelVideos = await fetchChannelVideos(channelId);
-
-                    // Filter out Shorts if the checkbox is checked
-                    if (excludeShorts) {
-                        channelVideos = channelVideos.filter(
-                            (video) => !video.title.toLowerCase().includes('shorts')
-                        );
+    
+        try {
+            // Fetch user data from Firestore
+            const userDocRef = doc(db, 'users', auth.currentUser.uid);
+            const userDoc = await getDoc(userDocRef);
+    
+            if (!userDoc.exists()) {
+                console.error('User document does not exist in Firestore.');
+                setLoading(false);
+                return;
+            }
+    
+            const userData = userDoc.data();
+            const tokensLimit = userData.tokensLimit;
+            const tokensUsed = userData.tokensUsed;
+    
+            // Check if the user has enough tokens
+            if (tokensUsed >= tokensLimit) {
+                alert('You have reached your token limit for this month. Upgrade your plan for more tokens.');
+                setLoading(false);
+                return;
+            }
+    
+            // Process each channel name
+            for (const channelName of channelNames) {
+                if (channelName.trim()) {
+                    const channelId = await fetchChannelIdByName(channelName);
+                    if (channelId) {
+                        let channelVideos = await fetchChannelVideos(channelId);
+    
+                        // Filter out Shorts if the checkbox is checked
+                        if (excludeShorts) {
+                            channelVideos = channelVideos.filter(
+                                (video) => !video.title.toLowerCase().includes('shorts'),
+                            );
+                        }
+    
+                        // Take the last 10 videos
+                        const last10Videos = channelVideos.slice(0, 10);
+    
+                        // Calculate the score for each video
+                        const scoredVideos = last10Videos.map((video) => {
+                            const commentsPerView = video.comments / video.views || 0;
+                            const likesPerView = video.likes / video.views || 0;
+    
+                            // Weighted scoring: 50% views, 25% comments per view, 25% likes per view
+                            const averageScore =
+                                video.views * 0.5 + commentsPerView * 100 * 0.25 + likesPerView * 100 * 0.25;
+    
+                            return {
+                                ...video,
+                                averageScore,
+                                commentsPerView,
+                                likesPerView,
+                            };
+                        });
+    
+                        // Sort videos by average score and take the top 3
+                        const top3Videos = scoredVideos
+                            .sort((a, b) => b.averageScore - a.averageScore)
+                            .slice(0, 3);
+    
+                        allVideos.push(...top3Videos);
+                    } else {
+                        console.error(`Channel not found for name: ${channelName}`);
                     }
-
-                    // Take the last 10 videos
-                    const last10Videos = channelVideos.slice(0, 10);
-
-                    // Calculate the score for each video
-                    const scoredVideos = last10Videos.map((video) => {
-                        const commentsPerView = video.comments / video.views || 0;
-                        const likesPerView = video.likes / video.views || 0;
-
-                        // Weighted scoring: 50% views, 25% comments per view, 25% likes per view
-                        const averageScore =
-                            video.views * 0.5 + commentsPerView * 100 * 0.25 + likesPerView * 100 * 0.25;
-
-                        return {
-                            ...video,
-                            averageScore,
-                            commentsPerView,
-                            likesPerView,
-                        };
-                    });
-
-                    // Sort videos by average score and take the top 3
-                    const top3Videos = scoredVideos
-                        .sort((a, b) => b.averageScore - a.averageScore)
-                        .slice(0, 3);
-
-                    allVideos.push(...top3Videos);
-                } else {
-                    console.error(`Channel not found for name: ${channelName}`);
                 }
             }
+    
+            // Update tokens used in Firestore
+            await updateDoc(userDocRef, {
+                tokensUsed: tokensUsed + 1, // Increment tokens used by 1
+            });
+    
+            // Update local state for tokens remaining
+            // setTokensRemaining(tokensLimit - (tokensUsed + 1));
+        } catch (error) {
+            console.error('Error fetching videos or updating tokens:', error);
+        } finally {
+            setVideos(allVideos);
+            setLoading(false);
         }
-
-        setVideos(allVideos);
-        setLoading(false);
     };
 
     const handleGenerateIdeas = async () => {

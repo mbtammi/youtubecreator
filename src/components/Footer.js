@@ -28,7 +28,7 @@ const Footer = () => {
             <div style={styles.about}>
                 <h3 style={styles.sectionTitle}>About Me</h3>
                 <p style={styles.aboutText}>
-                    Made with <span style={styles.emoji}>☕️</span> and <span style={styles.emoji}>🥐</span> by Miro.
+                    Made with <span style={styles.emoji}>🥤</span> and <span style={styles.emoji}>🐈‍⬛</span> by Miro.
                 </p>
                 <a href='https://www.mteif.com' target='_blank' rel='noopener noreferrer' style={styles.link}>
                     My portfolio

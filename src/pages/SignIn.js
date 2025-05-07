@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import { FaGoogle } from 'react-icons/fa'
-import { auth, googleProvider, signInWithPopup, signInWithEmailAndPassword } from '../services/Firebase'
+import { auth, googleProvider, signInWithPopup, signInWithEmailAndPassword, doc, getDoc, setDoc } from '../services/Firebase'
 import { useNavigate } from 'react-router-dom'
+import { db } from '../services/Firebase'
 
 const SignIn = () => {
     const [email, setEmail] = useState('')
@@ -24,8 +25,29 @@ const SignIn = () => {
 
     const handleGoogleSignIn = async () => {
         try {
+            // Sign in with Google
             const result = await signInWithPopup(auth, googleProvider)
             const user = result.user
+    
+            // Check if the user already exists in Firestore
+            const userDocRef = doc(db, 'users', user.uid)
+            const userDoc = await getDoc(userDocRef)
+    
+            if (!userDoc.exists()) {
+                // If the user doesn't exist, create a new document with default values
+                await setDoc(userDocRef, {
+                    email: user.email,
+                    role: 'none', // Default role
+                    displayName: user.displayName || user.email.split('@')[0],
+                    paymentStartDate: null,
+                    paymentEndDate: null,
+                    tokensUsed: 0,
+                    tokensLimit: 100,
+                    thumbnailsUsed: 0,
+                    thumbnailsLimit: 40,
+                })
+            }
+    
             console.log('Google Sign-In Successful:', user)
             navigate('/account')
         } catch (error) {
@@ -138,7 +160,7 @@ const styles = {
     registerText: {
         marginTop: '20px',
         fontSize: '1rem',
-        color: '#1c1c1c',
+        color: '#fff',
     },
     registerLink: {
         color: '#FFD60A',
