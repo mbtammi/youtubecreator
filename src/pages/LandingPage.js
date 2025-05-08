@@ -41,9 +41,9 @@ const LandingPage = () => {
                     Transform{' '}
                     <span style={styles.provenHighlight}>
                         <span style={styles.provenHighlightBefore}></span>
-                        Proven
+                        Proven Success
                     </span>{' '}
-                    Success into Your Next Viral Video
+                    Into Your Next Viral Video
                 </h1>
                     <p style={styles.subtitle}>
                         Leverage the power of <span style={styles.highlight}>AI</span> to analyze what works. Use real data from top-performing videos to craft content that captivates, engages, and drives results.
@@ -242,7 +242,7 @@ const styles = {
         backgroundColor: '#FFD60A',
         color: '#1c1c1c',
         textDecoration: 'none',
-        minWidth: '30%',
+        minWidth: '20%',
         padding: '20px 50px',
         borderRadius: '50px',
         fontSize: '1.5rem',

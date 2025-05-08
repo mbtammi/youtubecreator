@@ -40,7 +40,7 @@ const Header = () => {
         <header style={styles.header}>
             <h1 style={styles.logo}>
                 <Link to='/' style={{ textDecoration: 'none', color: 'inherit' }}>
-                    Inspiration Engine
+                    Trying to Create
                 </Link>
             </h1>
             <nav style={styles.nav}>

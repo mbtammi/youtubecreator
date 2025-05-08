@@ -213,7 +213,8 @@ const HomePage = () => {
             await updateDoc(userDocRef, {
                 tokensUsed: tokensUsed + 1, // Increment tokens used by 1
             });
-    
+
+            handleGenerateIdeas();
             // Update local state for tokens remaining
             // setTokensRemaining(tokensLimit - (tokensUsed + 1));
         } catch (error) {
@@ -244,15 +245,15 @@ const HomePage = () => {
   return (
     <div style={styles.container}>
             <header style={styles.header}>
-                <h1 style={styles.title}>Creator Inspiration Engine</h1>
+                <h1 style={styles.title}>Inspiration Engine</h1>
                 <p style={styles.subtitle}>
                 {userPlan === 'basic' ? (
                     <>
-                        Enter up to 3 YouTuber names by pressing <strong>Enter</strong> to fetch their latest videos:
+                        Enter up to 3 YouTube channels by pressing <strong>Enter</strong> to search their latest videos:
                     </>
                 ) : (
                     <>
-                        Enter up to 5 YouTuber names by pressing <strong>Enter</strong> to fetch their latest videos:
+                        Enter up to 5 YouTube channels by pressing <strong>Enter</strong> to search their latest videos:
                     </>
                 )}
                 </p>
@@ -298,7 +299,7 @@ const HomePage = () => {
                 <div style={styles.buttonContainer}>
                     {userPlan !== 'none' ? (
                         <button onClick={handleFetchVideos} disabled={loading} style={styles.button}>
-                            {loading ? 'Fetching...' : 'Fetch Videos'}
+                            {loading ? 'Searching...' : 'Get inspired!'}
                         </button>
                     ) : (
                         <button onClick={() => navigate('/pricing')} style={styles.button}>
@@ -306,13 +307,13 @@ const HomePage = () => {
                         </button>
                     )}
                 </div>
-                {videos.length > 0 && (
+                {/* {videos.length > 0 && (
                     <div style={styles.buttonContainer}>
                         <button onClick={handleGenerateIdeas} style={styles.button}>
                             Generate Video Ideas
                         </button>
                     </div>
-                )}
+                )} */}
                 {videoIdeas.length > 0 && (
             <div style={styles.ideasContainer}>
                 <h2 style={styles.sectionTitle}>Generated Video Ideas:</h2>
