@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { auth, db, doc, getDoc } from '../services/Firebase';
+import { auth, db, doc, getDoc, updateDoc } from '../services/Firebase';
 
 const Account = () => {
     const [currentPlan, setCurrentPlan] = useState('none'); // Default to "none"
@@ -64,6 +64,7 @@ const Account = () => {
                 // Fetch user data from Firestore
                 const userDocRef = doc(db, 'users', auth.currentUser.uid)
                 const userDoc = await getDoc(userDocRef)
+                console.log('User document:', userDoc)
 
                 if (userDoc.exists()) {
                     const userData = userDoc.data()
@@ -72,8 +73,11 @@ const Account = () => {
                     setTokensRemaining(tokensLeft > 0 ? tokensLeft : 0) // Ensure no negative values
 
                     // Calculate remaining thumbnails if the user has a premium or sigma plan
-                    if (userData.role === 'premium' || userData.role === 'sigma') {
+                    if (userData.plan === 'premium' || userData.plan === 'sigma') {
                         const thumbnailsLeft = userData.thumbnailsLimit - userData.thumbnailsUsed
+                        await updateDoc(userDocRef, {
+                            tokensLimit: 300, // Increment tokens used by 1
+                        });
                         setThumbnailsRemaining(thumbnailsLeft > 0 ? thumbnailsLeft : 0) // Ensure no negative values
                     } else {
                         setThumbnailsRemaining(0) // No thumbnails for basic users
@@ -133,7 +137,6 @@ const Account = () => {
                 <button
                     style={styles.button}
                     onClick={redirectToStripeCheckout}
-                    disabled={loading}
                 >
                     {loading ? 'Processing...' : 'Proceed to Payment'}
                 </button>
