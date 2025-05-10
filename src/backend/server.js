@@ -206,6 +206,23 @@ app.post('/generate-thumbnail', async (req, res) => {
 //     }
 // })
 
+app.post('/cancel-subscription', async (req, res) => {
+    try {
+        const { subscriptionId, reason } = req.body;
+
+        // Log the reason for cancellation (optional)
+        console.log(`Cancellation reason: ${reason}`);
+
+        // Cancel the subscription
+        const deletedSubscription = await stripe.subscriptions.del(subscriptionId);
+
+        res.status(200).json({ success: true, subscription: deletedSubscription });
+    } catch (error) {
+        console.error('Error canceling subscription:', error);
+        res.status(500).json({ success: false, error: error.message });
+    }
+});
+
 app.post('/check-customer-plan', async (req, res) => {
     const { email } = req.body;
 

@@ -58,6 +58,42 @@ const Account = () => {
         }
     }, []);
 
+    const cancelSubscription = async () => {
+        // Ask the user for confirmation
+        const isSure = window.confirm('Are you sure you want to cancel your subscription?');
+        if (!isSure) return;
+    
+        // Ask the user why they are canceling
+        const reason = prompt('Please let us know why you are canceling your subscription (optional):');
+    
+        try {
+            setLoading(true);
+    
+            // Replace with the actual subscription ID from your database or Stripe
+            const subscriptionId = 'sub_1234567890'; // Example subscription ID
+    
+            const response = await fetch('https://your-backend-url.com/cancel-subscription', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ subscriptionId, reason }), // Include the reason in the request
+            });
+    
+            const data = await response.json();
+    
+            if (data.success) {
+                alert('Subscription canceled successfully.');
+                setCurrentPlan('none'); // Update the UI to reflect the cancellation
+            } else {
+                alert('Failed to cancel subscription: ' + data.error);
+            }
+        } catch (error) {
+            console.error('Error canceling subscription:', error);
+            alert('An error occurred while canceling the subscription.');
+        } finally {
+            setLoading(false);
+        }
+    };
+
     useEffect(() => {
         const fetchCustomerData = async () => {
             try {
@@ -152,6 +188,13 @@ const Account = () => {
                     Thumbnails remaining this month: <strong>{thumbnailsRemaining}</strong>
                 </p>
             )}
+            <button
+                style={styles.button}
+                onClick={cancelSubscription}
+                disabled={loading}
+            >
+                {loading ? 'Canceling...' : 'Cancel Subscription'}
+            </button>
         </div>
     );
 };
