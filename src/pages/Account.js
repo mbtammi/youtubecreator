@@ -38,6 +38,7 @@ const Account = () => {
                 });
 
                 const data = await response.json();
+                console.log('Response from server:', data);
                 if (data.plan) {
                     console.log('User plan:', data.plan);
                     setCurrentPlan(data.plan);
