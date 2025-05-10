@@ -125,16 +125,17 @@ const LandingPage = () => {
 const styles = {
     container: {
         color: '#1e293b',
-        background: ' #0f172a',
+        background: '#0f172a',
         minHeight: '100vh',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        animation: 'fadeIn 1.5s ease-in-out', // Fade-in animation for the entire page
+        padding: '20px',
+        animation: 'fadeIn 1.5s ease-in-out',
     },
     header: {
         textAlign: 'center',
-        marginBottom: '60px',
+        marginBottom: '40px',
     },
     graphSection: {
         display: 'flex',
@@ -142,10 +143,13 @@ const styles = {
         justifyContent: 'center',
         marginTop: '5%',
         marginBottom: '8%',
+        flexWrap: 'wrap', // Ensures proper wrapping on smaller screens
+        gap: '20px', // Adds spacing between elements
     },
     screenshots: {
         position: 'relative',
-        width: '18em', // Set the width to 18em
+        right: '5%', 
+        width: '16em', // Adjusted for better scaling on mobile
         aspectRatio: '16 / 9',
     },
     screenshot: {
@@ -154,173 +158,166 @@ const styles = {
         height: '100%',
         borderRadius: '10px',
         boxShadow: '0 4px 6px rgba(0, 0, 0, 0.2)',
-        // animation: 'scaleUpDown 3s infinite ease-in-out',
     },
     leftTilt: {
-        transform: 'rotate(-15deg)',
-        top: '15%',
+        transform: 'rotate(-10deg)',
+        top: '10%',
         left: '0',
         zIndex: 1,
         opacity: 0.8,
     },
     centerScreenshot: {
         transform: 'rotate(0deg)',
-        bottom: '20%',
-        left: '20%',
+        bottom: '10%',
+        left: '15%',
         zIndex: 2,
-        opacity: 0.8,
+        opacity: 0.9,
     },
     rightTilt: {
         transform: 'rotate(5deg)',
         top: '40%',
-        left: '50%',
+        left: '20%',
         zIndex: 0,
         opacity: 0.8,
     },
     arrowContainer: {
         display: 'flex',
         alignItems: 'center',
-        marginLeft: '20%',
-        gap: '5%',
+        justifyContent: 'center',
+        gap: '10px',
+        flexWrap: 'wrap',
+        paddingLeft: '3em',
     },
     arrow: {
-        width: '150px',
+        width: '100px',
         height: 'auto',
         transform: 'rotate(30deg)',
     },
     arrowText: {
-        fontSize: '2.4rem',
+        fontSize: '1.8rem',
         color: '#FFD60A',
-        // fontWeight: 'bold',
         fontStyle: 'italic',
         padding: '10px',
-        textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)', // Added shadow for better readability
-        animation: 'fadeIn 2s ease-in-out', // Fade-in animation for the text
+        textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)',
+        textAlign: 'center',
     },
     heroSection: {
         textAlign: 'center',
         marginBottom: '40px',
+        padding: '0 20px', // Adds padding for better spacing on mobile
     },
     bigTitle: {
-        fontSize: '3.5rem',
+        fontSize: '2.5rem',
         color: '#FFD60A',
-        marginBottom: '30px',
+        marginBottom: '20px',
         fontWeight: 'bold',
-        textShadow: '3px 3px 6px rgba(0, 0, 0, 0.6)', // Added shadow for the title
-        animation: 'zoomIn 1s ease-in-out', // Zoom-in animation for the title
+        textShadow: '3px 3px 6px rgba(0, 0, 0, 0.6)',
     },
     provenHighlight: {
-        position: 'relative', // Required for the pseudo-element
-        display: 'inline-block', // Ensures the pseudo-element wraps the text
+        position: 'relative',
+        display: 'inline-block',
         fontWeight: 'bold',
-        color: '#FFFFFF', // White text for better contrast
-        textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)', // Subtle shadow for emphasis
+        color: '#FFFFFF',
+        textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)',
     },
     provenHighlightBefore: {
-        content: "''", // Empty content for the pseudo-element
+        content: "''",
         position: 'absolute',
-        bottom: '-5px', // Position the underline slightly below the text
+        bottom: '-5px',
         left: 0,
         right: 0,
-        height: '10px', // Height of the underline
-        background: 'linear-gradient(to right, #0f172a, rgba(0, 191, 255, 0.5))', // Gradient underline
-        borderRadius: '4px', // Optional: Adds rounded corners to the underline
+        height: '10px',
+        background: 'linear-gradient(to right, #0f172a, rgba(0, 191, 255, 0.5))',
+        borderRadius: '4px',
     },
     subtitle: {
-        fontSize: '1.3rem',
+        fontSize: '1rem',
         color: '#fff',
-        marginBottom: '40px',
-        lineHeight: '1.8',
-        textShadow: '1px 1px 3px rgba(0, 0, 0, 0.5)', // Subtle shadow for the subtitle
+        marginBottom: '30px',
+        lineHeight: '1.6',
+        textShadow: '1px 1px 3px rgba(0, 0, 0, 0.5)',
     },
     ctaContainer: {
         display: 'flex',
         justifyContent: 'center',
+        flexWrap: 'wrap', // Ensures buttons stack on smaller screens
+        gap: '15px',
         marginTop: '20px',
     },
     ctaButton: {
         backgroundColor: '#FFD60A',
         color: '#1c1c1c',
         textDecoration: 'none',
-        minWidth: '20%',
-        padding: '20px 50px',
+        padding: '15px 30px',
         borderRadius: '50px',
-        fontSize: '1.5rem',
+        fontSize: '1.2rem',
         fontWeight: 'bold',
         transition: 'transform 0.3s ease, background-color 0.3s ease',
         boxShadow: '0 4px 6px rgba(0, 0, 0, 0.2)',
         cursor: 'pointer',
-        animation: 'bounce 2s infinite', // Bounce animation for the button
     },
-    ctaButtonHover: {
-        backgroundColor: '#FFC107', // Change color on hover
+    videoLink: {
+        display: 'flex',
+        alignItems: 'center',
+        color: '#FFD60A',
+        textDecoration: 'none',
+        fontSize: '1rem',
+        fontWeight: 'bold',
+        transition: 'color 0.3s ease',
+    },
+    videoIcon: {
+        marginRight: '8px',
+        fontSize: '1.5rem',
     },
     featuresSection: {
         textAlign: 'center',
-        padding: '40px 20px', // Add padding for breathing room
-        backgroundColor: '#0f172a', // Retain the original background color for contrast
-        borderRadius: '10px', // Rounded corners for a modern look
+        padding: '40px 20px',
+        backgroundColor: '#0f172a',
+        borderRadius: '10px',
     },
     sectionTitle: {
-        fontSize: '2.5rem',
+        fontSize: '2rem',
         color: '#fff',
-        marginBottom: '30px',
+        marginBottom: '20px',
         fontWeight: 'bold',
         textShadow: '1px 1px 3px rgba(0, 0, 0, 0.2)',
-    },
-    howItWorksTitle: {
-        color: 'black',
-        marginBottom: '30px',
-        fontWeight: 'bold',
-        textShadow: '1px 1px 3px rgba(0, 0, 0, 0.2)',
-        fontSize: '2.5rem',
     },
     featuresGrid: {
         display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', // Responsive grid layout
-        gap: '20px', // Space between feature cards
+        gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+        gap: '20px',
     },
     featureCard: {
-        backgroundColor: '#0f172a', // Dark background for the cards
+        backgroundColor: '#1e293b',
         padding: '20px',
-        borderRadius: '10px', // Rounded corners for a modern look
-        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', 
-        transition: 'transform 0.3s ease, box-shadow 0.3s ease', // Smooth hover effect
-    },
-    featureCardHover: {
-        transform: 'scale(1.05)', // Slightly enlarge on hover
-        boxShadow: '0 8px 15px rgba(0, 0, 0, 0.2)', // More prominent shadow on hover
+        borderRadius: '10px',
+        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+        transition: 'transform 0.3s ease, box-shadow 0.3s ease',
     },
     featureTitle: {
-        fontSize: '1.5rem',
-        color: '#FFFFFF', // White text for contrast
+        fontSize: '1.2rem',
+        color: '#FFFFFF',
         marginBottom: '10px',
         fontWeight: 'bold',
-        textShadow: '1px 1px 2px rgba(0, 0, 0, 0.1)', // Subtle shadow for feature titles
+        textShadow: '1px 1px 2px rgba(0, 0, 0, 0.1)',
     },
     featureDescription: {
-        fontSize: '1rem',
-        color: '#cbd5e1', // Light gray text for readability
+        fontSize: '0.9rem',
+        color: '#cbd5e1',
         lineHeight: '1.6',
     },
-    featureIcon: {
-        marginLeft: '8px', // Space between the title and the emoji
-        fontSize: '1.2rem', // Slightly smaller than the title
-    },
     howItWorksSection: {
-    textAlign: 'center',
-    padding: '40px 20px',
-    background: 'linear-gradient(to bottom,rgb(220, 234, 255), #e5e5e5)', // Subtle gradient
-    borderRadius: '10px',
-    marginTop: '40px',
-    boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Add a soft shadow for depth
-    position: 'relative', // Required for the optional pattern overlay
-    overflow: 'hidden', // Ensures the pattern doesn't overflow the section
+        textAlign: 'center',
+        padding: '40px 20px',
+        background: 'linear-gradient(to bottom, rgb(220, 234, 255), #e5e5e5)',
+        borderRadius: '10px',
+        marginTop: '40px',
+        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
     },
     howItWorksText: {
-        fontSize: '1.2rem',
+        fontSize: '1rem',
         color: 'black',
-        lineHeight: '1.8',
+        lineHeight: '1.6',
         marginBottom: '20px',
     },
     howItWorksList: {
@@ -330,49 +327,71 @@ const styles = {
         color: 'black',
     },
     howItWorksItem: {
-        fontSize: '1.1rem',
+        fontSize: '1rem',
         marginBottom: '15px',
         lineHeight: '1.6',
     },
     joinText: {
         marginTop: '20px',
-        fontSize: '1.2rem',
-        color: '#cbd5e1', // Light gray for readability
+        fontSize: '1rem',
+        color: '#cbd5e1',
         textAlign: 'center',
         lineHeight: '1.6',
     },
-    videoLink: {
-        display: 'flex',
-        alignItems: 'center',
-        marginLeft: '20px', // Space between the button and the link
-        color: '#FFD60A', // Match the button color
-        textDecoration: 'none',
-        fontSize: '1.2rem',
-        fontWeight: 'bold',
-        transition: 'color 0.3s ease',
-        cursor: 'pointer',
+    // Media queries for mobile optimization
+    '@media (max-width: 768px)': {
+        graphSection: {
+            flexDirection: 'column',
+            marginTop: '20px',
+            marginBottom: '40px',
+        },
+        screenshots: {
+            width: '14em',
+        },
+        arrowContainer: {
+            flexDirection: 'column',
+            gap: '10px',
+            marginTop: '30px !important',
+        },
+        arrowText: {
+            fontSize: '1.5rem',
+        },
+        arrow: {
+            transform: 'rotate(-130deg)',
+        },
+        bigTitle: {
+            fontSize: '2rem',
+        },
+        subtitle: {
+            fontSize: '0.9rem',
+        },
+        ctaButton: {
+            padding: '10px 20px',
+            fontSize: '1rem',
+        },
+        featuresGrid: {
+            gridTemplateColumns: '1fr',
+        },
+        howItWorksText: {
+            fontSize: '0.9rem',
+        },
+        howItWorksItem: {
+            fontSize: '0.9rem',
+        },
+        rightTilt: {
+            transform: 'rotate(0deg)',
+            position: 'sticky',
+            top: '0%',
+            left: '10%',
+            zIndex: 0,
+            opacity: 1,
+        },
+        screenshot: {
+            position: 'sticky',
+            left: '0',
+        }
     },
-    videoIcon: {
-        marginRight: '8px', // Space between the icon and the text
-        fontSize: '1.5rem',
-    },
-    videoLinkHover: {
-        color: '#FFC107', // Slightly lighter color on hover
-    },
-    videoFrame: {
-        marginLeft: '2em',
-        width: '19em', // Match the width of the screenshots
-        aspectRatio: '16 / 9',
-        borderRadius: '10px',
-        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.2)',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        overflow: 'hidden', // Ensure content stays within the frame
-        position: 'relative',
-        border: '1px solid #FFD60A', 
-    },
-};
+}
 
 
 export default LandingPage;
