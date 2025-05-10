@@ -31,7 +31,7 @@ const Account = () => {
     useEffect(() => {
         const fetchUserPlan = async () => {
             try {
-                const response = await fetch('http://localhost:5002/check-customer-plan', {
+                const response = await fetch('https://youtubecreator.onrender.com:10069/check-customer-plan', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ email: auth.currentUser.email }),
@@ -90,7 +90,11 @@ const Account = () => {
     }, [auth.currentUser])
 
     const redirectToStripeCheckout = () => {
-        window.location.href = 'https://buy.stripe.com/test_9AQ6q7csE7v9cco3cc';
+        if (selectedPlan === 'basic') {
+            window.location.href = 'https://buy.stripe.com/3csaICflFebk1CU4gh';
+        } else {
+            window.location.href = 'https://buy.stripe.com/00g03Y7Td4AK2GY7ss';
+        }
     };
 
     return (
