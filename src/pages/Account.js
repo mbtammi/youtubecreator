@@ -72,7 +72,7 @@ const Account = () => {
             // Replace with the actual subscription ID from your database or Stripe
             const subscriptionId = 'sub_1234567890'; // Example subscription ID
     
-            const response = await fetch('https://your-backend-url.com/cancel-subscription', {
+            const response = await fetch('https://youtubecreator.onrender.com/cancel-subscription', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ subscriptionId, reason }), // Include the reason in the request
