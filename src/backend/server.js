@@ -11,7 +11,7 @@ const app = express();
 const port = process.env.PORT || 5002;
 
 // Middleware
-app.use(cors({ origin: 'http://localhost:3000' }));
+app.use(cors({ origin: 'https://youtubecreator.onrender.com:10069' }));
 app.use(bodyParser.json());
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, { apiVersion: '2022-11-15' });
@@ -262,5 +262,5 @@ app.post('/check-customer-plan', async (req, res) => {
 
 // Start the server
 app.listen(port, () => {
-    console.log(`Server is running on http://localhost:${port}`);
+    console.log(`Server is running on ${port}`);
 });

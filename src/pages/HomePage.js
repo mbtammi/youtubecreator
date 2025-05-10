@@ -31,7 +31,7 @@ const HomePage = () => {
     useEffect(() => {
         const fetchUserPlan = async () => {
             try {
-                const response = await fetch('http://localhost:5002/check-customer-plan', {
+                const response = await fetch('https://youtubecreator.onrender.com:10069/check-customer-plan', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ email: auth.currentUser.email }),
@@ -86,7 +86,7 @@ const HomePage = () => {
   
       try {
           // Call the backend to generate the thumbnail
-          const response = await fetch('http://localhost:5002/generate-thumbnail', {
+          const response = await fetch('https://youtubecreator.onrender.com:10069/generate-thumbnail', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({ idea }),
@@ -302,7 +302,7 @@ const HomePage = () => {
                             {loading ? 'Searching...' : 'Get inspired!'}
                         </button>
                     ) : (
-                        <button onClick={() => navigate('/pricing')} style={styles.button}>
+                        <button onClick={() => navigate('/account')} style={styles.button}>
                             Choose a plan to Fetch Videos
                         </button>
                     )}
