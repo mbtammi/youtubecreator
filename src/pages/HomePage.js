@@ -54,7 +54,7 @@ const HomePage = () => {
         if (auth.currentUser) {
             fetchUserPlan();
         } else {
-            navigate('/signin'); // Redirect to sign-in if the user is not authenticated
+            navigate('/home');
         }
     }, [navigate]);
 
