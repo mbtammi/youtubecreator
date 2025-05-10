@@ -58,31 +58,54 @@ const Account = () => {
         }
     }, []);
 
+    const fetchSubscriptionId = async () => {
+        try {
+            const response = await fetch('https://youtubecreator.onrender.com/get-subscription-id', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: auth.currentUser.email }),
+            });
+    
+            const data = await response.json();
+    
+            if (data.subscriptionId) {
+                console.log('Subscription ID:', data.subscriptionId);
+                return data.subscriptionId;
+            } else {
+                alert('No active subscription found.');
+                return null;
+            }
+        } catch (error) {
+            console.error('Error fetching subscription ID:', error);
+            alert('An error occurred while fetching the subscription ID.');
+            return null;
+        }
+    };
+
     const cancelSubscription = async () => {
-        // Ask the user for confirmation
         const isSure = window.confirm('Are you sure you want to cancel your subscription?');
         if (!isSure) return;
     
-        // Ask the user why they are canceling
         const reason = prompt('Please let us know why you are canceling your subscription (optional):');
     
         try {
             setLoading(true);
     
-            // Replace with the actual subscription ID from your database or Stripe
-            const subscriptionId = 'sub_1234567890'; // Example subscription ID
+            // Fetch the subscription ID dynamically
+            const subscriptionId = await fetchSubscriptionId();
+            if (!subscriptionId) return;
     
             const response = await fetch('https://youtubecreator.onrender.com/cancel-subscription', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ subscriptionId, reason }), // Include the reason in the request
+                body: JSON.stringify({ subscriptionId, reason }),
             });
     
             const data = await response.json();
     
             if (data.success) {
                 alert('Subscription canceled successfully.');
-                setCurrentPlan('none'); // Update the UI to reflect the cancellation
+                setCurrentPlan('none');
             } else {
                 alert('Failed to cancel subscription: ' + data.error);
             }

@@ -223,6 +223,44 @@ app.post('/cancel-subscription', async (req, res) => {
     }
 });
 
+app.post('/get-subscription-id', async (req, res) => {
+    try {
+        const { email } = req.body;
+
+        if (!email) {
+            return res.status(400).json({ error: 'Email is required' });
+        }
+
+        // Fetch the customer by email
+        const customers = await stripe.customers.list({
+            email,
+            limit: 1,
+        });
+
+        if (customers.data.length === 0) {
+            return res.status(404).json({ error: 'Customer not found' });
+        }
+
+        const customer = customers.data[0];
+
+        // Fetch subscriptions for the customer
+        const subscriptions = await stripe.subscriptions.list({
+            customer: customer.id,
+            limit: 1,
+        });
+
+        if (subscriptions.data.length === 0) {
+            return res.status(404).json({ error: 'No active subscriptions found' });
+        }
+
+        const subscriptionId = subscriptions.data[0].id;
+        res.json({ subscriptionId });
+    } catch (error) {
+        console.error('Error fetching subscription ID:', error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
 app.post('/check-customer-plan', async (req, res) => {
     const { email } = req.body;
 
