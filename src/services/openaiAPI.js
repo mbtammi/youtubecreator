@@ -1,6 +1,6 @@
 export async function generateVideoIdeas(popularTitles) {
     try {
-      const response = await fetch('https://youtubecreator.onrender.com:10069/generate-ideas', {
+      const response = await fetch('https://youtubecreator.onrender.com/generate-ideas', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

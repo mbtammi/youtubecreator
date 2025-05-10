@@ -31,7 +31,7 @@ const HomePage = () => {
     useEffect(() => {
         const fetchUserPlan = async () => {
             try {
-                const response = await fetch('https://youtubecreator.onrender.com:10069/check-customer-plan', {
+                const response = await fetch('https://youtubecreator.onrender.com/check-customer-plan', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ email: auth.currentUser.email }),
@@ -86,7 +86,7 @@ const HomePage = () => {
   
       try {
           // Call the backend to generate the thumbnail
-          const response = await fetch('https://youtubecreator.onrender.com:10069/generate-thumbnail', {
+          const response = await fetch('https://youtubecreator.onrender.com/generate-thumbnail', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({ idea }),
@@ -394,114 +394,37 @@ const HomePage = () => {
 };
 
 const styles = {
-  container: {
-    backgroundColor: '#0f172a',
-    color: '#f5f5f5',
-    minHeight: '100vh',
-    padding: '20px',
-    paddingBottom: '10%',
-  },
-  header: {
-    maxWidth: '800px',
-    margin: '0 auto',
-    textAlign: 'center',
-  },
-  title: {
-    color: '#FFD60A',
-    fontSize: '2.5rem',
-    marginBottom: '10px',
-    textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)', // Added shadow for better readability
-  },
-  subtitle: {
-    fontSize: '1.2rem',
-    marginBottom: '20px',
-    textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)', // Added shadow for better readability
-  },
-  inputContainer: {
-    display: 'flex',
-    justifyContent: 'center',
-    gap: '5%',
-    marginBottom: '20px',
-  },
-  checkboxContainer: {
-    marginBottom: '20px',
-  },
-  checkboxLabel: {
-    fontSize: '1rem',
-    textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)', // Added shadow for better readability
-  },
-  checkbox: {
-    marginRight: '10px',
-  },
-  buttonContainer: {
-    marginBottom: '20px',
-    textAlign: 'center',
-  },
-  button: {
-    backgroundColor: '#FFD60A',
-    color: '#1c1c1c',
-    border: 'none',
-    padding: '15px 30px', // Increased padding for a larger button
-    fontSize: '1.2rem', // Increased font size for better readability
-    borderRadius: '8px', // Slightly more rounded corners
-    cursor: 'pointer',
-    transition: 'transform 0.3s ease, background-color 0.3s ease', // Smooth hover effect
-    boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Subtle shadow for depth
-  },
-  videoListContainer: {
-    marginTop: '30px',
-  },
-  sectionTitle: {
-    color: '#FFD60A',
-    fontSize: '1.5rem',
-    marginBottom: '10px',
-  },
-  videoGrid: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-    gap: '20px',
-  },
-  videoCard: {
-    backgroundColor: '#1e252b',
-    padding: '10px',
-    borderRadius: '5px',
-    textAlign: 'center',
-    opacity: 0.9,
-  },
-    thumbnail: {
-        width: '100%',
-        aspectRatio: '16 / 9',
-        objectFit: 'cover',
-        borderRadius: '8px',
-        marginBottom: '10px',
+    container: {
+        backgroundColor: '#0f172a',
+        color: '#f5f5f5',
+        minHeight: '100vh',
+        padding: '20px',
+        paddingBottom: '10%',
     },
-  videoTitle: {
-    fontSize: '1.2rem',
-    marginBottom: '5px',
-  },
-  videoDetails: {
-    fontSize: '0.9rem',
-    marginBottom: '5px',
-  },
-  link: {
-    color: '#FFD60A',
-    textDecoration: 'none',
-    fontWeight: 'bold',
-  },
-  ideasContainer: {
-    marginTop: '30px',
-  },
-  ideasList: {
-    listStyleType: 'none',
-    padding: '0',
-  },
-  ideaItem: {
-    backgroundColor: '#2c2c2c',
-    padding: '10px',
-    borderRadius: '5px',
-    marginBottom: '10px',
-  },
-  inputWrapper: {
+    header: {
+        maxWidth: '800px',
+        margin: '0 auto',
+        textAlign: 'center',
+        padding: '10px',
+    },
+    title: {
+        color: '#FFD60A',
+        fontSize: '2.5rem',
+        marginBottom: '10px',
+        textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)',
+    },
+    subtitle: {
+        fontSize: '1.2rem',
+        marginBottom: '20px',
+        textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)',
+    },
+    inputContainer: {
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '10px',
+        marginBottom: '20px',
+    },
+    inputWrapper: {
         position: 'relative',
     },
     input: {
@@ -529,53 +452,110 @@ const styles = {
         padding: '5px',
         cursor: 'pointer',
     },
-    generateThumbnailButton: {
+    checkboxContainer: {
+        marginBottom: '20px',
+        textAlign: 'center',
+    },
+    checkboxLabel: {
+        fontSize: '1rem',
+    },
+    checkbox: {
+        marginRight: '10px',
+    },
+    buttonContainer: {
+        textAlign: 'center',
+        marginBottom: '20px',
+    },
+    button: {
         backgroundColor: '#FFD60A',
         color: '#1c1c1c',
         border: 'none',
-        padding: '10px 15px',
-        fontSize: '0.9rem',
-        borderRadius: '5px',
+        padding: '15px 30px',
+        fontSize: '1.2rem',
+        borderRadius: '8px',
         cursor: 'pointer',
-        marginTop: '10px',
         transition: 'transform 0.3s ease, background-color 0.3s ease',
+        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
     },
-    thumbnailContainer: {
-      marginTop: '20px',
-      textAlign: 'center',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
+    videoListContainer: {
+        marginTop: '30px',
     },
-    thumbnailImage: {
-      width: '640px', // Scaled down width
-      height: '360px', // Scaled down height (16:9 aspect ratio)
-      borderRadius: '10px',
-      boxShadow: '0 4px 6px rgba(0, 0, 0, 0.2)',
-      objectFit: 'cover',
-  },
+    sectionTitle: {
+        color: '#FFD60A',
+        fontSize: '1.5rem',
+        marginBottom: '10px',
+        textAlign: 'center',
+    },
+    videoGrid: {
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+        gap: '20px',
+    },
+    videoCard: {
+        backgroundColor: '#1e252b',
+        padding: '10px',
+        borderRadius: '5px',
+        textAlign: 'center',
+        opacity: 0.9,
+    },
+    thumbnail: {
+        width: '100%',
+        aspectRatio: '16 / 9',
+        objectFit: 'cover',
+        borderRadius: '8px',
+        marginBottom: '10px',
+    },
+    videoTitle: {
+        fontSize: '1.2rem',
+        marginBottom: '5px',
+    },
+    link: {
+        color: '#FFD60A',
+        textDecoration: 'none',
+        fontWeight: 'bold',
+    },
+    ideasContainer: {
+        marginTop: '30px',
+    },
+    ideasList: {
+        listStyleType: 'none',
+        padding: '0',
+    },
+    ideaItem: {
+        backgroundColor: '#2c2c2c',
+        padding: '10px',
+        borderRadius: '5px',
+        marginBottom: '10px',
+    },
     ideaRow: {
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'space-between', // Space between the title and the icon
+        justifyContent: 'space-between',
     },
     ideaText: {
-        margin: 0, // Remove default margin for better alignment
+        margin: 0,
         fontSize: '1rem',
         color: '#f5f5f5',
     },
-    thumbnailIcon: {
-        cursor: 'pointer',
-        fontSize: '1.5rem',
-        marginLeft: '10px', // Add spacing between the title and the icon
-        transition: 'transform 0.3s ease',
+    thumbnailContainer: {
+        marginTop: '20px',
+        textAlign: 'center',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
     },
-    thumbnailIconHover: {
-        transform: 'scale(1.2)', // Slight zoom effect on hover
+    thumbnailImage: {
+        width: '100%',
+        maxWidth: '640px',
+        height: 'auto',
+        borderRadius: '10px',
+        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.2)',
+        objectFit: 'cover',
     },
     thumbnailPlaceholder: {
-        width: '640px', // Scaled down width
-        height: '360px', // Scaled down height (16:9 aspect ratio)
+        width: '100%',
+        maxWidth: '640px',
+        height: '360px',
         backgroundColor: '#2c2c2c',
         display: 'flex',
         alignItems: 'center',
@@ -591,22 +571,45 @@ const styles = {
         textAlign: 'center',
     },
     videoStats: {
-      display: 'flex',
-      justifyContent: 'center',
-      gap: '10px',
-      alignItems: 'center',
-      marginTop: '10px',
-      fontSize: '0.9rem',
-      color: '#f5f5f5',
+        display: 'flex',
+        justifyContent: 'center',
+        gap: '10px',
+        alignItems: 'center',
+        marginTop: '10px',
+        fontSize: '0.9rem',
+        color: '#f5f5f5',
     },
     statItem: {
         display: 'flex',
         alignItems: 'center',
-        gap: '5px', // Space between the icon and the number
+        gap: '5px',
     },
     icon: {
         fontSize: '1rem',
     },
-};
+    // Media queries for mobile optimization
+    '@media (max-width: 768px)': {
+        inputContainer: {
+            flexDirection: 'column',
+            gap: '15px',
+        },
+        button: {
+            width: '100%',
+            padding: '12px 20px',
+            fontSize: '1rem',
+        },
+        videoGrid: {
+            gridTemplateColumns: '1fr',
+        },
+        thumbnailImage: {
+            width: '100%',
+            height: 'auto',
+        },
+        thumbnailPlaceholder: {
+            width: '100%',
+            height: 'auto',
+        },
+    },
+}
 
 export default HomePage;

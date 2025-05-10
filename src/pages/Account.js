@@ -31,7 +31,7 @@ const Account = () => {
     useEffect(() => {
         const fetchUserPlan = async () => {
             try {
-                const response = await fetch('https://youtubecreator.onrender.com:10069/check-customer-plan', {
+                const response = await fetch('https://youtubecreator.onrender.com/check-customer-plan', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ email: auth.currentUser.email }),
@@ -53,6 +53,7 @@ const Account = () => {
         if (auth.currentUser) {
             fetchUserPlan();
         } else {
+            console.error('User is not authenticated.');
         }
     }, []);
 
