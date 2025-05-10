@@ -8,7 +8,7 @@ import Replicate from "replicate";
 dotenv.config();
 
 const app = express();
-const port = 5002;
+const port = process.env.PORT || 5002;
 
 // Middleware
 app.use(cors({ origin: 'http://localhost:3000' }));

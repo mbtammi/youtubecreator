@@ -140,7 +140,7 @@ const styles = {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: '3%',
+        marginTop: '5%',
         marginBottom: '8%',
     },
     screenshots: {

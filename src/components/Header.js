@@ -92,6 +92,10 @@ const styles = {
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
+        position: 'sticky', // Makes the header sticky
+        top: 0, // Sticks the header to the top of the viewport
+        zIndex: 1000, // Ensures the header stays above other elements
+        boxShadow: '0 1px 3px #FFD60A', // Subtle shadow for depth
     },
     logo: {
         fontSize: '1.5rem',

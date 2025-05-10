@@ -366,13 +366,13 @@ const HomePage = () => {
                           <p style={styles.videoTitle}>{video.title}</p>
                           <div style={styles.videoStats}>
                               <span style={styles.statItem}>
-                                  <span style={styles.icon}>👁️</span> {video.views}
+                                  <span style={styles.icon}>Views:</span> {video.views}
                               </span>
                               <span style={styles.statItem}>
                                   <span style={styles.icon}>👍</span> {video.likes}
                               </span>
                               <span style={styles.statItem}>
-                                  <span style={styles.icon}>💬</span> {video.comments}
+                                  <span style={styles.icon}>Comments:</span> {video.comments}
                               </span>
                           </div>
                           <a
