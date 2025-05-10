@@ -214,7 +214,7 @@ app.post('/cancel-subscription', async (req, res) => {
         console.log(`Cancellation reason: ${reason}`);
 
         // Cancel the subscription
-        const deletedSubscription = await stripe.subscriptions.del(subscriptionId);
+        const deletedSubscription = await stripe.subscriptions.cancel(subscriptionId);
 
         res.status(200).json({ success: true, subscription: deletedSubscription });
     } catch (error) {
