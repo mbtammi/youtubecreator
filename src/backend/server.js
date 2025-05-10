@@ -15,6 +15,7 @@ app.use(cors({
     origin: [
         'http://localhost:3000', // Local development
         'https://youtubecreator.onrender.com',
+        'https://www.tryingtocreate.com',
     ],
     methods: ['GET', 'POST'],
     credentials: true,
